@@ -43,14 +43,14 @@ The Project model is designed to manage key aspects of project management within
 #### Task model
 The Task model is designed to manage and track tasks within a project, capturing essential details such as title, description, status, priority, due date, assignment, and project association. This model ensures that tasks are clearly defined, assigned, and monitored, facilitating effective project management and team collaboration within the TeamFlow application.
 
-![Models Image](Readme_images\Models_Image.png)
+![Models Image](Readme_images/Models_Image.png)
 
 ### URLS
 
 The URL configuration defines the routing for various views in the application, including home page navigation, user authentication, and project management.
 
 
-![Urls Image](https://prnt.sc/pYoDn4nlWe8B)
+![Urls Image](Readme_images/Urls_Image.png)
 
 
 ### Views
