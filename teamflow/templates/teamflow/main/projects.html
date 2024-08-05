@@ -1,0 +1,19 @@
+{% extends "teamflow/layout.html" %}
+
+{% block title %}
+    Projects
+{% endblock title %}
+
+
+{% block body %}
+    <div class="create-project-main-div"> 
+        <a id="create-project-btn" href="{% url 'create_project' %}" class="btn btn-primary">Create Project</a>
+        
+        <div class="projects"></div>
+    
+    </div>
+
+    {% load static %} 
+    <script src="{% static 'teamflow/projects_page.js' %}"></script>
+
+{% endblock body %}

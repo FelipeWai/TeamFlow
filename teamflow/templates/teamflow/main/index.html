@@ -1,0 +1,67 @@
+{% extends "teamflow/layout.html" %}
+
+{% block title %}Login{% endblock title %}
+
+{% block body %}
+        <div class="tasks">
+            {% for project, tasks in project_tasks.items %}
+                <div class="project-card">
+                    <h2>{{ project.name }}</h2>
+                    <h6>Created by: {{ project.created_by }}</h6>
+            
+                    {% if project.created_by == user %}
+                        <h6>Tasks:</h6>
+                        {% if tasks %}
+                            {% for task in tasks %}
+                                <div class="task">
+                                    <h4>{{ task.title }}</h4>
+                                    <p><strong>Assigned to:</strong> {{ task.assigned_to }}</p>
+                                    <p><strong>Priority:</strong> {{ task.priority }}</p>
+                                    <p><strong>Status:</strong> 
+                                        {% if task.status == "Not Started" %}
+                                            <span style="color:#800000;">{{ task.status }}</span>
+                                        {% elif task.status == "In Progress" %}
+                                            <span style="color:#968c00;">{{ task.status }}</span>
+                                        {% else %}
+                                            <span style="color:#198000;">{{ task.status }}</span>
+                                        {% endif %}
+                                    </p>
+                                    <p><strong>Due date:</strong> {{ task.due_date }}</p>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p>No tasks for this project.</p>
+                        {% endif %}
+                    {% else %}
+                        <h6>Your tasks for this project:</h6>
+                        {% if tasks %}
+                            {% for task in tasks %}
+                                <div class="task">
+                                    <h3>{{ task.title }}</h3>
+                                    <p><strong>Priority:</strong> {{ task.priority }}</p>
+                                    <p><strong>Status:</strong> 
+                                        <form method="post" action="{% url 'update_status' task.id %}" class="status-form">
+                                            {% csrf_token %}
+                                            <select name="status" onchange="this.form.submit()">
+                                                <option value="Not Started" {% if task.status == 'Not Started' %}selected{% endif %}>Not Started</option>
+                                                <option value="In Progress" {% if task.status == 'In Progress' %}selected{% endif %}>In Progress</option>
+                                                <option value="Concluded" {% if task.status == 'Concluded' %}selected{% endif %}>Concluded</option>
+                                            </select>
+                                        </form>
+                                    </p>
+                                    <p><strong>Due date:</strong> {{ task.due_date }}</p>
+                                </div>
+                                <br>
+                            {% endfor %}
+                        {% else %}
+                            <p>No tasks assigned to you for this project.</p>
+                        {% endif %}
+                    {% endif %}
+                    <br>
+                </div>
+            {% endfor %}
+        </div>
+    {% load static %} 
+    <script src="{% static 'teamflow/tasks_page.js' %}"></script>
+
+{% endblock body %}

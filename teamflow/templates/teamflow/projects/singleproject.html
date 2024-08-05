@@ -1,0 +1,107 @@
+{% extends "teamflow/layout.html" %}
+
+{% block title %}
+    {{ project.name }}
+{% endblock title %}
+
+{% block body %}
+
+    <div class="create-project-main-div">
+        <h1>{{ project.name }}</h1>
+        <h6>{{ project.description }}</h6>
+        <h6>{{ project.start_date }} to {{project.due_date}}</h6>
+
+        {% if user.id == project.created_by.id %}
+            <div class="button-group" style="margin-top: 50px;">
+                <button id="add-members-btn" class="btn btn-secondary btn-sm">Add Members</button>
+                <button id="assign-task-btn" class="btn btn-primary btn-sm" style="margin-left: 10px;">Assign Task</button>
+                <button id="end-task-btn" class="btn btn-danger btn-sm" style="margin-left: 10px;">End project</button>
+                <button id="close-members-btn" class="btn btn-danger btn-sm" style="display: none; margin-left: 10px;">Close</button>
+            </div>
+            <div id="members-dropdown" class="dropdown" style="display: none; margin-top: 20px;">
+                <input type="text" id="member-search" class="form-control" placeholder="Search members" style="margin-bottom: 10px;">
+                <select id="member-select" class="form-control" multiple style="margin-bottom: 10px;"></select>
+                <button id="add-selected-members" class="btn btn-primary btn-sm">Add</button>
+            </div>
+
+            <!-- Assign Task Form -->
+            <div id="assign-task-form" style="display: none; margin-top: 20px;">
+                <h6>Assign a New Task</h6>
+                <form id="task-form" method="post" action="">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="task-title">Title:</label>
+                        <input type="text" id="task-title" name="title" class="form-control" required style="margin-top: 10px;">
+                    </div>
+                    <div class="form-group">
+                        <label for="task-description">Description:</label>
+                        <textarea id="task-description" name="description" class="form-control" rows="4" required style="margin-top: 10px;"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="task-priority">Priority:</label>
+                        <select id="task-priority" name="priority" class="form-control" required style="margin-top: 10px;">
+                            <option value="Low">Low</option>
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="task-due-date">Due Date:</label>
+                        <input type="date" id="task-due-date" name="due_date" class="form-control" required style="margin-top: 10px;">
+                    </div>
+                    <div class="form-group">
+                        <label for="task-assigned-to">Assign To:</label>
+                        <input type="text" id="task-assigned-to" name="assigned_to" class="form-control" placeholder="User email" required style="margin-top: 10px;">
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Create Task</button>
+                </form>
+            </div>            
+        {% endif %}
+
+        <h6 style="margin-top: 20px;">Members</h6>
+        <div class="project-members">
+            {% for member_with_tasks in members_with_tasks %}
+                <div class="member">
+                    <p><strong>Username:</strong> {{ member_with_tasks.member.username }}</p>
+                    <p><strong>Email:</strong> {{ member_with_tasks.member.email }}</p>
+                    
+                    <!-- Display tasks associated with the member -->
+                    <div class="tasks-list">
+                        <h6>Tasks:</h6>
+                        <ul>
+                            {% for task in member_with_tasks.tasks %}
+                                <li><a class="task-link" href="#">{{ task.title }}</a> 
+                                    {% if task.status == "Not Started" %}
+                                        <span style="color:#800000;">{{task.status}}</span>
+                                    {% elif task.status == "In Progress" %}
+                                        <span style="color:#968c00;">{{task.status}}</span>
+                                    {% else %}
+                                        <span style="color:#198000;">{{task.status}}</span>
+                                    {% endif %}
+                                </li>
+                            {% empty %}
+                                <li>No tasks assigned</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    {% if user.id == project.created_by.id %}
+                        <form action="{% url 'remove_member' project_id=project.id member_id=member_with_tasks.member.id %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm remove-member-btn" data-email="{{ member.email }}">Remove Member</button>
+                        </form>
+                    {% endif %}
+                </div>
+                <hr>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% load static %}
+    <script src="{% static 'teamflow/single_project_page.js' %}"></script>
+    <script>
+        var project = {
+            id: "{{ project.id }}"
+        };
+    </script>
+{% endblock body %}

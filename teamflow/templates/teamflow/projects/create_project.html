@@ -1,0 +1,23 @@
+{% extends "teamflow/layout.html" %}
+
+{% block title %}
+    Create Project
+{% endblock title %}
+
+{% block body %}
+
+    <div class="create-project-div">
+        <span>Create Project</span>
+
+        <form action="{% url 'create_project' %}" method="post"> 
+            {% csrf_token %}
+            <input type="text" name="name" placeholder="Project name">
+            <label for="start_date">Start Date</label>
+            <input type="date" name="start_date" placeholder="Start Date">
+            <label for="due_date">Due Date</label>
+            <input type="date" name="due_date" placeholder="Due Date">
+            <textarea name="description" id="description" cols="30" rows="10" placeholder="Description"></textarea>
+            <input type="submit" class="btn btn-primary" value="Create">
+        </form>
+    </div>
+{% endblock body %}

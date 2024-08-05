@@ -1,0 +1,25 @@
+{% extends "teamflow/layout.html" %}
+
+{% block title %}Login{% endblock title %}
+
+
+
+
+{% block body %}
+    
+    <div class="login-div">
+        <span>Login</span>
+
+        <form action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            <input type="text" name="email" placeholder="Email">
+            <input type="password" name="password" placeholder="Password">
+            <input type="submit" class="btn btn-primary" value="Login">
+        </form>
+
+        <h5>
+            Not registred? 
+            <a href="{% url 'register' %}">Register Here</a> 
+        </h5>
+    </div>  
+{% endblock body %}
