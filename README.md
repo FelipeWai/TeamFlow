@@ -50,7 +50,7 @@ The Task model is designed to manage and track tasks within a project, capturing
 The URL configuration defines the routing for various views in the application, including home page navigation, user authentication, and project management.
 
 
-![Urls Image](Readme_images\Urls_Image.png)
+![Urls Image](https://prnt.sc/pYoDn4nlWe8B)
 
 
 ### Views
