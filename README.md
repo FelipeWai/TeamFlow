@@ -157,7 +157,7 @@ Once the server is running, you can access the application by opening your web b
 
 ![Login Page](Readme_images\Login_Page_Image.png)
 ![Register Page](Readme_images\Register_Page.png)
-![Index Page](Readme_images\Index_Image.png)
+![Index Page](TeamFlow\Readme_images\Index_Image.png)
 ![Projects Image](Readme_images\Projects_Image.png)
 ![Single Project Image](Readme_images\Single_Project_Page.png)
 ![Add Member](Readme_images\Add_Member_Image.png)
